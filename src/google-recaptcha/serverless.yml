@@ -1,0 +1,24 @@
+service: google-recaptcha
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+
+functions:
+  google-recaptcha:
+    handler: handler.recaptcha
+    name: google-recaptcha
+    environment:
+      RECAPTCHA: ${file(recaptcha.json):recaptcha}
+      
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
