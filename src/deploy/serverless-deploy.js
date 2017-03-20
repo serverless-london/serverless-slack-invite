@@ -54,7 +54,7 @@ class Serverless {
 
     // set the options and commands which were processed by the CLI
     this.pluginManager.setCliOptions(deployOptions);
-    this.pluginManager.setCliCommands('deploy');
+    this.pluginManager.setCliCommands(['deploy']);
     this.service.config.servicePath = slsServicePath;
 
     return this.service.load(deployOptions)
@@ -62,17 +62,13 @@ class Serverless {
         // load all plugins
         this.pluginManager.loadAllPlugins(this.service.plugins);
 
-        //DEPLOY FROM HERE
+       
 
         // give the CLI the plugins and commands so that it can print out
         // information such as options when the user enters --help
  //       this.cli.setLoadedPlugins(this.pluginManager.getPlugins());
  //       this.cli.setLoadedCommands(this.pluginManager.getCommands());
       });
-  }
-
-  deploy() {
-      
   }
 
   run() {
@@ -87,17 +83,17 @@ class Serverless {
 
     // populate variables after --help, otherwise help may fail to print
     // (https://github.com/serverless/serverless/issues/2041)
-    this.variables.populateService('deploy');
+    this.variables.populateService(['deploy']);
 
     // populate function names after variables are loaded in case functions were externalized
     // (https://github.com/serverless/serverless/issues/2997)
-    this.service.setFunctionNames(deployOptions);
+    this.service.setFunctionNames(this.pluginManager.cliOptions);
 
     // validate the service configuration, now that variables are loaded
     this.service.validate();
 
     // trigger the plugin lifecycle when there's something which should be processed
-    return this.pluginManager.run('deploy');
+    return this.pluginManager.run(['deploy']);
   }
 
   setProvider(name, provider) {
@@ -113,4 +109,4 @@ class Serverless {
   }
 }
 
-module.exports = Serverless;
+exports.default = Serverless;
